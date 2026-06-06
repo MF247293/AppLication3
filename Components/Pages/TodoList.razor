@@ -1,5 +1,49 @@
-﻿<h3>TodoList</h3>
+﻿@page "/todo"
+
+<h3>To-Do List</h3>
+
+<!-- Two-way binding: @bind captures and updates newTask on every keystroke -->
+<div class="todo-input-row">
+    <input type="text"
+           @bind="newTask"
+           @bind:event="oninput"
+           placeholder="Enter a task..."
+           class="todo-input" />
+    <button class="btn btn-primary" @onclick="AddTask">Add Task</button>
+    <button class="btn btn-danger" @onclick="ClearAll">Clear All</button>
+</div>
+
+@if (tasks.Count == 0)
+{
+    <p class="no-tasks">No tasks yet. Add one above!</p>
+}
+else
+{
+    <ul class="task-list">
+        @foreach (var task in tasks)
+        {
+            <li class="task-item">@task</li>
+        }
+    </ul>
+}
 
 @code {
+   
+    private string newTask = "";
 
+ 
+    private List<string> tasks = new();
+
+    private void AddTask()
+    {
+        if (!string.IsNullOrWhiteSpace(newTask))
+        {
+            tasks.Add(newTask.Trim());
+            newTask = ""; 
+        }
+    }
+    private void ClearAll()
+    {
+        tasks.Clear();
+    }
 }
